@@ -1,0 +1,15 @@
+ listView1.Columns.Add("名字", 200, HorizontalAlignment.Center);//表头名，长度，格式
+            listView1.Columns.Add("密码", 70);
+            listView1.Columns.Add("状态", 120, HorizontalAlignment.Center);
+            listView1.GridLines = true; //显示表格线
+            listView1.View = View.Details;//显示表格细节
+            listView1.HeaderStyle = ColumnHeaderStyle.Clickable;//对表头进行设置
+            listView1.FullRowSelect = true;//是否可以选择行
+            String[] post = new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" };
+            //        DataTable dt =“你查询出来的数据";//数据查询什么的我就不啰嗦了
+            for (int i = 0; i < post.Length; i++)
+            {
+                ListViewItem[] listViewItem = new ListViewItem[1];
+                listViewItem[0] = new ListViewItem(new string[] { post[i], post[i], post[i] });
+                listView1.Items.AddRange(listViewItem);
+            }

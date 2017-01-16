@@ -1,0 +1,13 @@
+1.Visual Studio 2015 ,点击工具，选择 NuGet包管理器， 
+在控制台输入安装命令，Install-Package ilmerge.
+
+2.打包使用步骤
+
+  1.将debug下的A.exe文件 与B.dll库文件 C.dll 复制进
+工程目录下的packages\ILMerge.2.14.1208\tools目录下，
+
+  2.打开dos命令窗口，在改目录下输入
+
+ILMerge.exe /ndebug /target:winexe /out:IM1.exe A.exe /log B.dll  /log C.dll 
+
+  3.IM1.exe就是生成的文件。
