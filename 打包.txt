@@ -14,12 +14,21 @@ ILMerge.exe /ndebug /target:winexe /out:usniffer-0.0.01.exe ZedGraphPlot.exe /lo
 3.IM1.exe就是生成的文件。
 
 
-第二种方法：vs2015 
+第二种方法：
+
+
+     
+
+     vs2015 
 
      点击 工具 --Nuget包管理器 -- 程序包管理器控制台 --
    Install-Package Costura.Fody -Version 1.3.3  会自动
 安装，然后调试一下，打开debug目录就能够看到有可以单独运行的exe文件，对于
 uwp项目，这种办法失败。
+
+
+
+
       vs2008 (过程比较繁琐，一般不推荐)
 参考：http://blog.sina.com.cn/s/blog_614298170100f5nz.html
      新建项目 --安装项目，位置要选择需要打包的项目路径。
