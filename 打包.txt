@@ -1,0 +1,43 @@
+第一种方法：
+1.Visual Studio 2015 ,点击工具，选择 NuGet包管理器， 
+在控制台输入安装命令，Install-Package ilmerge.
+
+2.打包使用步骤
+
+  1.将debug下的A.exe文件 与B.dll库文件 C.dll 复制进
+工程目录下的packages\ILMerge.2.14.1208\tools目录下，
+
+  2.打开dos命令窗口，在改目录下输入
+
+ILMerge.exe /ndebug /target:winexe /out:usniffer-0.0.01.exe ZedGraphPlot.exe /log ZedGraph.dll 
+
+3.IM1.exe就是生成的文件。
+
+
+第二种方法：vs2015 
+
+     点击 工具 --Nuget包管理器 -- 程序包管理器控制台 --
+   Install-Package Costura.Fody -Version 1.3.3  会自动
+安装，然后调试一下，打开debug目录就能够看到有可以单独运行的exe文件，对于
+uwp项目，这种办法失败。
+      vs2008 (过程比较繁琐，一般不推荐)
+参考：http://blog.sina.com.cn/s/blog_614298170100f5nz.html
+     新建项目 --安装项目，位置要选择需要打包的项目路径。
+应用程序文件夹，右边将debug目录下 所有文件全部引用进来，
+将exe文件创建 快捷方式，并且在属性，添加一个iocn图标。
+依次复制到 用户的“程序菜单”、 用户桌面 中 
+
+添加一个卸载图标： 
+这个文件在c:\windows\system32\msiexec.exe文件夹下,将名字修改一下
+添加到用户的“程序菜单”里面 ，Aguements属性中输入/x +打包程序
+属性的ProductCode后面一大坨东东
+
+"应用程序文件夹"打开属性对话框:
+将属性中的"defaultlocation"的路径中的"[manufacturer]"去掉
+
+右键打开 打包项目（setup1）的属性，点击 右下角的 “系统必备(p)....”
+,后面那个随便你自己选。
+然后 重新生成项目，在Debug路径下就能够看对自己打包的文件。
+
+ 
+   

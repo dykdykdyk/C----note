@@ -13,3 +13,5 @@
                 listViewItem[0] = new ListViewItem(new string[] { post[i], post[i], post[i] });
                 listView1.Items.AddRange(listViewItem);
             }
+
+
