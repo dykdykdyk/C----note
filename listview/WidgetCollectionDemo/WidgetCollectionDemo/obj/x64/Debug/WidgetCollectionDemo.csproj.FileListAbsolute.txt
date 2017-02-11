@@ -1,0 +1,8 @@
+C:\Users\Administrator\Desktop\VSProject\WidgetCollectionDemo\WidgetCollectionDemo\bin\x64\Debug\WidgetCollectionDemo.exe
+C:\Users\Administrator\Desktop\VSProject\WidgetCollectionDemo\WidgetCollectionDemo\bin\x64\Debug\WidgetCollectionDemo.pdb
+C:\Users\Administrator\Desktop\VSProject\WidgetCollectionDemo\WidgetCollectionDemo\obj\x64\Debug\ResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\VSProject\WidgetCollectionDemo\WidgetCollectionDemo\obj\x64\Debug\WidgetCollectionDemo.Form1.resources
+C:\Users\Administrator\Desktop\VSProject\WidgetCollectionDemo\WidgetCollectionDemo\obj\x64\Debug\WidgetCollectionDemo.Properties.Resources.resources
+C:\Users\Administrator\Desktop\VSProject\WidgetCollectionDemo\WidgetCollectionDemo\obj\x64\Debug\WidgetCollectionDemo.csproj.GenerateResource.Cache
+C:\Users\Administrator\Desktop\VSProject\WidgetCollectionDemo\WidgetCollectionDemo\obj\x64\Debug\WidgetCollectionDemo.exe
+C:\Users\Administrator\Desktop\VSProject\WidgetCollectionDemo\WidgetCollectionDemo\obj\x64\Debug\WidgetCollectionDemo.pdb

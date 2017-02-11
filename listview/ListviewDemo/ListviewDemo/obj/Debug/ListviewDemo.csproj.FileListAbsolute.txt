@@ -1,0 +1,8 @@
+C:\Users\Administrator\Desktop\VSProject\ListviewDemo\ListviewDemo\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\VSProject\ListviewDemo\ListviewDemo\obj\Debug\ListviewDemo.Form1.resources
+C:\Users\Administrator\Desktop\VSProject\ListviewDemo\ListviewDemo\obj\Debug\ListviewDemo.Properties.Resources.resources
+C:\Users\Administrator\Desktop\VSProject\ListviewDemo\ListviewDemo\obj\Debug\ListviewDemo.csproj.GenerateResource.Cache
+C:\Users\Administrator\Desktop\VSProject\ListviewDemo\ListviewDemo\bin\Debug\ListviewDemo.exe
+C:\Users\Administrator\Desktop\VSProject\ListviewDemo\ListviewDemo\bin\Debug\ListviewDemo.pdb
+C:\Users\Administrator\Desktop\VSProject\ListviewDemo\ListviewDemo\obj\Debug\ListviewDemo.exe
+C:\Users\Administrator\Desktop\VSProject\ListviewDemo\ListviewDemo\obj\Debug\ListviewDemo.pdb
