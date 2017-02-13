@@ -5,7 +5,12 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-
+/*
+ *DataGridView简单课程表制作
+ *label属性 如果设置大小 需要将autosize改成 false 才有用
+ *隐藏头一列 RowHeadersVisible 设置为false才有用
+ *隐藏最后一行 AllowUserToAddRows 
+ */
 namespace DataGridView1
 {
     public partial class Form1 : Form
