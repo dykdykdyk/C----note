@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win7FTP", "Win7FTP\Win7FTP.csproj", "{6C7D8E5B-9E30-44D0-AD4F-06C74D6454C8}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup1", "Setup1\Setup1.vdproj", "{F270A02D-F27C-4594-A708-A57B49AA232B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		CodeAnalysisDebug|Any CPU = CodeAnalysisDebug|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C7D8E5B-9E30-44D0-AD4F-06C74D6454C8}.CodeAnalysisDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C7D8E5B-9E30-44D0-AD4F-06C74D6454C8}.CodeAnalysisDebug|Any CPU.Build.0 = Debug|Any CPU
+		{6C7D8E5B-9E30-44D0-AD4F-06C74D6454C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C7D8E5B-9E30-44D0-AD4F-06C74D6454C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C7D8E5B-9E30-44D0-AD4F-06C74D6454C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C7D8E5B-9E30-44D0-AD4F-06C74D6454C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F270A02D-F27C-4594-A708-A57B49AA232B}.CodeAnalysisDebug|Any CPU.ActiveCfg = Debug
+		{F270A02D-F27C-4594-A708-A57B49AA232B}.Debug|Any CPU.ActiveCfg = Debug
+		{F270A02D-F27C-4594-A708-A57B49AA232B}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
