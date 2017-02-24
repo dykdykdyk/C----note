@@ -1,0 +1,8 @@
+C:\Users\Administrator\Desktop\VSProject\PointDemo\PointDemo\bin\Debug\PointDemo.exe
+C:\Users\Administrator\Desktop\VSProject\PointDemo\PointDemo\bin\Debug\PointDemo.pdb
+C:\Users\Administrator\Desktop\VSProject\PointDemo\PointDemo\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\VSProject\PointDemo\PointDemo\obj\Debug\PointDemo.Form1.resources
+C:\Users\Administrator\Desktop\VSProject\PointDemo\PointDemo\obj\Debug\PointDemo.Properties.Resources.resources
+C:\Users\Administrator\Desktop\VSProject\PointDemo\PointDemo\obj\Debug\PointDemo.csproj.GenerateResource.Cache
+C:\Users\Administrator\Desktop\VSProject\PointDemo\PointDemo\obj\Debug\PointDemo.exe
+C:\Users\Administrator\Desktop\VSProject\PointDemo\PointDemo\obj\Debug\PointDemo.pdb

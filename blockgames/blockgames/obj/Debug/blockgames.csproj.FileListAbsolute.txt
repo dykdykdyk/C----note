@@ -1,0 +1,8 @@
+C:\Users\Administrator\Desktop\VSProject\blockgames\blockgames\bin\Debug\blockgames.exe
+C:\Users\Administrator\Desktop\VSProject\blockgames\blockgames\bin\Debug\blockgames.pdb
+C:\Users\Administrator\Desktop\VSProject\blockgames\blockgames\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\VSProject\blockgames\blockgames\obj\Debug\blockgames.Form1.resources
+C:\Users\Administrator\Desktop\VSProject\blockgames\blockgames\obj\Debug\blockgames.Properties.Resources.resources
+C:\Users\Administrator\Desktop\VSProject\blockgames\blockgames\obj\Debug\blockgames.csproj.GenerateResource.Cache
+C:\Users\Administrator\Desktop\VSProject\blockgames\blockgames\obj\Debug\blockgames.exe
+C:\Users\Administrator\Desktop\VSProject\blockgames\blockgames\obj\Debug\blockgames.pdb

@@ -1,0 +1,8 @@
+C:\Users\Administrator\Desktop\VSProject\UdpSecondConnect\UdpSecondConnect\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\VSProject\UdpSecondConnect\UdpSecondConnect\obj\Debug\UdpSecondConnect.Form1.resources
+C:\Users\Administrator\Desktop\VSProject\UdpSecondConnect\UdpSecondConnect\obj\Debug\UdpSecondConnect.Properties.Resources.resources
+C:\Users\Administrator\Desktop\VSProject\UdpSecondConnect\UdpSecondConnect\obj\Debug\UdpSecondConnect.csproj.GenerateResource.Cache
+C:\Users\Administrator\Desktop\VSProject\UdpSecondConnect\UdpSecondConnect\bin\Debug\UdpSecondConnect.exe
+C:\Users\Administrator\Desktop\VSProject\UdpSecondConnect\UdpSecondConnect\bin\Debug\UdpSecondConnect.pdb
+C:\Users\Administrator\Desktop\VSProject\UdpSecondConnect\UdpSecondConnect\obj\Debug\UdpSecondConnect.exe
+C:\Users\Administrator\Desktop\VSProject\UdpSecondConnect\UdpSecondConnect\obj\Debug\UdpSecondConnect.pdb
