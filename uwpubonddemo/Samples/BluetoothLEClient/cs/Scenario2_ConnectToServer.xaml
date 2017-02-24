@@ -1,0 +1,373 @@
+﻿<Page
+    x:Class="SDKTemplate.Scenario2_ConnectToServer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:SDKTemplate"
+    
+    mc:Ignorable="d">
+    <Page.Resources>
+
+        <DataTemplate x:Key="AttributeTemplate" x:DataType="local:BluetoothLEAttributeDisplay">
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*" MinWidth="100"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="1" Margin="5">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{x:Bind Name}" Style="{StaticResource ListItemTextStyle}" FontWeight="Bold" TextWrapping="WrapWholeWords"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{x:Bind AttributeDisplayType}" Margin="10,0,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+    <ScrollViewer Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="12,10,12,12">
+        <StackPanel>
+            <TextBlock Style="{StaticResource ListItemTextStyle}" TextWrapping="Wrap" Margin="0,10,0,0">
+                Selected device: <Run Text="{x:Bind rootPage.SelectedBleDeviceName}" FontWeight="Bold"/>
+            </TextBlock>
+            <Button x:Name="ConnectButton" Content="Connect" Click="{x:Bind ConnectButton_Click}" Margin="0,0,0,0"/>
+            <Button x:Name="CharacteristicNotifyPanel" Content="Get notifications" Click="{x:Bind CharacteristicNotifyButton_Click}"
+                         Margin="0,10,10,0"/>
+            <ComboBox   Height="33" HorizontalAlignment="Right" Margin="0,10,0,0" x:Name="comboBox1" VerticalAlignment="Top" Width="180" SelectedIndex="0" SelectionChanged="comboBox1_SelectionChanged_1" >
+                <ComboBoxItem  >
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="设置相关命令" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="时间设置" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="闹钟设置" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="获取设备闹钟列表请求"  />
+                    </StackPanel>
+                </ComboBoxItem>
+                <!--<comboboxitem background="lightcoral">-->
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="计步目标设定" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="用户信息设置命令" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="防丢设置"  />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="久坐提醒设置" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="出厂设置" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="名字设置" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="设置图片1组" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="清空图片0组" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="图片文字设置1组" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="清空图片文字0组" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="设置图片0组" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="图片文字设置0组" />
+                    </StackPanel>
+                </ComboBoxItem>
+            </ComboBox>
+
+            <ComboBox   Height="33" HorizontalAlignment="Right" Margin="10,10,0,0" x:Name="comboBox2" VerticalAlignment="Top" Width="180" SelectedIndex="0" SelectionChanged="comboBox2_SelectionChanged" >
+                <ComboBoxItem>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="消息相关命令" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="手机请求设备报警" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="来电提醒" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="来电已接听"  />
+                    </StackPanel>
+                </ComboBoxItem>
+                <!--<comboboxitem background="lightcoral">-->
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="来电已拒接" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="短信提醒" />
+                    </StackPanel>
+                </ComboBoxItem>
+            </ComboBox>
+
+            
+            <ComboBox   Height="33" HorizontalAlignment="Right" Margin="10,10,0,0" x:Name="comboBox3" VerticalAlignment="Top" Width="180" SelectedIndex="0" SelectionChanged="comboBox3_SelectionChanged" >
+                <ComboBoxItem>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="安全相关命令"  />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="手机请求删除绑定" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="超级绑定" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="用户登录请求" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <!--<comboboxitem background="lightcoral">-->
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="手机请求蓝牙设备MAC地址" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="手机请求蓝牙设备E号" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="手机请求绑定" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="请求获得设备特性" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="请求断开" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="连接(不是协议指令)" />
+                    </StackPanel>
+                </ComboBoxItem>
+            </ComboBox>
+
+            <ComboBox   Height="33" HorizontalAlignment="Right" Margin="10,10,0,0" x:Name="comboBox4" VerticalAlignment="Top" Width="180" SelectedIndex="0" SelectionChanged="comboBox4_SelectionChanged" >
+                <ComboBoxItem>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="运动相关命令" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="请求实时运动数据" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="请求历史运动数据(这个已经包含有简单的历史睡眠时间了)" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="请求实时气压数据" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <!--<comboboxitem background="lightcoral">-->
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="请求挪动历史步数数据指针" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="请求最近一天的总睡眠时间" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="请求详细历史睡眠时间" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="请求挪动历史睡眠数据指针" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="请求当前位置动作数据" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <!--<comboboxitem background="lightcoral">-->
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="请求历史位置动作数据" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="请求挪动历史位置动作数据(*)" />
+                    </StackPanel>
+                </ComboBoxItem>
+            </ComboBox>
+
+
+            <ComboBox   Height="33" HorizontalAlignment="Right" Margin="10,10,0,0" x:Name="comboBox5" VerticalAlignment="Top" Width="180" SelectedIndex="0" SelectionChanged="comboBox5_SelectionChanged"  >
+                <ComboBoxItem>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="止血带及水杯相关命令"  />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="请求药品剂量数据" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="请求删除药品剂量数据" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="请求设置药品类型" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <!--<comboboxitem background="lightcoral">-->
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="请求实时水温数据" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="请求实时水量数据" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="请求历史水温数据" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <!--<comboboxitem background="lightcoral">-->
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="请求好友列表" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="水杯参数设置(*)" />
+                    </StackPanel>
+                </ComboBoxItem>
+            </ComboBox>
+
+
+            <ComboBox   Height="33" HorizontalAlignment="Right" Margin="10,10,0,0" x:Name="comboBox6" VerticalAlignment="Top" Width="180" SelectedIndex="0" SelectionChanged="comboBox6_SelectionChanged"  >
+                <ComboBoxItem>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="健康相关命令"  />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="请求实时心率数据" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="请求历史心率数据" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="请求体温数据"  />
+                    </StackPanel>
+                </ComboBoxItem>
+                <!--<comboboxitem background="lightcoral">-->
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="请求历史温度数据" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="请求挪动历史心率数据指针" />
+                    </StackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="请求挪动历史体温数据指针" />
+                    </StackPanel>
+                </ComboBoxItem>
+            </ComboBox>
+
+            <Grid Name="grid1" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Height="300" >
+                <ListView x:Name="ResultsListView">
+                </ListView>
+            </Grid>
+
+           
+
+        </StackPanel>
+
+    </ScrollViewer>
+</Page>

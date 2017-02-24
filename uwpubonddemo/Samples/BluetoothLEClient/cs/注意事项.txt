@@ -1,0 +1,1 @@
+Get notifications 点击后，界面上有打印Successfully registered for notifications，才可以写入指令。
