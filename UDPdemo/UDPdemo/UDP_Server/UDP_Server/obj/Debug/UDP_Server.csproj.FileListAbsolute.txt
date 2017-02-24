@@ -1,0 +1,12 @@
+D:\U3Dworkplace\base\UDP_Server\UDP_Server\bin\Debug\UDP_Server.exe.config
+D:\U3Dworkplace\base\UDP_Server\UDP_Server\bin\Debug\UDP_Server.exe
+D:\U3Dworkplace\base\UDP_Server\UDP_Server\bin\Debug\UDP_Server.pdb
+D:\U3Dworkplace\base\UDP_Server\UDP_Server\obj\Debug\UDP_Server.csprojResolveAssemblyReference.cache
+D:\U3Dworkplace\base\UDP_Server\UDP_Server\obj\Debug\UDP_Server.exe
+D:\U3Dworkplace\base\UDP_Server\UDP_Server\obj\Debug\UDP_Server.pdb
+C:\Users\Administrator\Desktop\gittest\udp\UDPdemo\UDPdemo\UDP_Server\UDP_Server\bin\Debug\UDP_Server.exe.config
+C:\Users\Administrator\Desktop\gittest\udp\UDPdemo\UDPdemo\UDP_Server\UDP_Server\obj\Debug\UDP_Server.exe
+C:\Users\Administrator\Desktop\gittest\udp\UDPdemo\UDPdemo\UDP_Server\UDP_Server\obj\Debug\UDP_Server.pdb
+C:\Users\Administrator\Desktop\gittest\udp\UDPdemo\UDPdemo\UDP_Server\UDP_Server\bin\Debug\UDP_Server.exe
+C:\Users\Administrator\Desktop\gittest\udp\UDPdemo\UDPdemo\UDP_Server\UDP_Server\bin\Debug\UDP_Server.pdb
+C:\Users\Administrator\Desktop\gittest\udp\UDPdemo\UDPdemo\UDP_Server\UDP_Server\obj\Debug\UDP_Server.csprojResolveAssemblyReference.cache

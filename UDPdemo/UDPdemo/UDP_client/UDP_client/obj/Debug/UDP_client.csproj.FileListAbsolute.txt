@@ -1,0 +1,10 @@
+D:\U3Dworkplace\base\UDP_client\UDP_client\bin\Debug\UDP_client.exe.config
+D:\U3Dworkplace\base\UDP_client\UDP_client\bin\Debug\UDP_client.exe
+D:\U3Dworkplace\base\UDP_client\UDP_client\bin\Debug\UDP_client.pdb
+D:\U3Dworkplace\base\UDP_client\UDP_client\obj\Debug\UDP_client.exe
+D:\U3Dworkplace\base\UDP_client\UDP_client\obj\Debug\UDP_client.pdb
+C:\Users\Administrator\Desktop\gittest\udp\UDPdemo\UDPdemo\UDP_client\UDP_client\bin\Debug\UDP_client.exe.config
+C:\Users\Administrator\Desktop\gittest\udp\UDPdemo\UDPdemo\UDP_client\UDP_client\obj\Debug\UDP_client.exe
+C:\Users\Administrator\Desktop\gittest\udp\UDPdemo\UDPdemo\UDP_client\UDP_client\obj\Debug\UDP_client.pdb
+C:\Users\Administrator\Desktop\gittest\udp\UDPdemo\UDPdemo\UDP_client\UDP_client\bin\Debug\UDP_client.exe
+C:\Users\Administrator\Desktop\gittest\udp\UDPdemo\UDPdemo\UDP_client\UDP_client\bin\Debug\UDP_client.pdb
