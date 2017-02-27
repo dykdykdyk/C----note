@@ -34,6 +34,8 @@ namespace Win7FTP
         Thread workThread, workThreadtwo;
         //test.txt集合
         List<String> LineList = new List<String> { };
+        //test1.txt集合
+        List<String> LineList2 = new List<String> { };
         //判断状态集合
         List<String> LinesCounts = new List<String> { };
         //listview拍续集和
@@ -297,10 +299,7 @@ namespace Win7FTP
           //读取文件 这边 一般建议获取文本编码
           FileStream fs2 = new FileStream("C:/Windows/test.txt", FileMode.Open);
           StreamReader sr = new StreamReader(fs2, System.Text.Encoding.UTF8);
-          //StreamReader sr = GetFileEncodeType("C:/Windows/test.txt");
           string sLine = "";
-          //System.Diagnostics.Debug.WriteLine("" + sLine);
-          //List<String> LineList = new ArrayList();
           while (sLine != null)
           {
               sLine = sr.ReadLine();
@@ -311,11 +310,47 @@ namespace Win7FTP
                       LineList.Add(sLine);
                   }
               }
-              //System.Diagnostics.Debug.WriteLine(sLine);
           }
-          //System.Diagnostics.Debug.WriteLine(LineList);
           sr.Close();
+
+          FileStream fs22 = new FileStream("C:/Windows/test1.txt", FileMode.Open);
+          StreamReader sr2 = new StreamReader(fs22, System.Text.Encoding.UTF8);
+          string sLine2 = "";
+          while (sLine2 != null)
+          {
+              sLine2 = sr2.ReadLine();
+              if (sLine2 != null && !sLine2.Equals(""))
+              {
+                  if (exists2(sLine2))
+                  {
+                      LineList2.Add(sLine2);
+                  }
+              }
+          }
+          sr2.Close();
+
       }
+      public bool exists2(string name)
+      {
+          for (int i = 0; i < LineList2.Count; i++)
+          {
+              if ((Separatenumber(name).Equals(Separatenumber(LineList2[i]))) &&
+                        (Separatefilename(name).Equals(Separatefilename(LineList2[i]))))
+              {
+                  return false;
+              }
+              else
+              {
+                  //return true;  
+                  if (i == LineList2.Count)
+                  {
+                      return true;
+                  }
+              }
+          }
+          return true;
+      }
+
       //如果 之前已经有了数据，不用再加进去
       public bool exists(string name)
       {
@@ -436,7 +471,7 @@ namespace Win7FTP
           fs.Close();
           //frmLogin fl = new frmLogin();
           //更新test.txt文件
-          UpLoadFile("C:/Windows/test.txt", "ftp://120.77.249.136/test.txt");
+          UpLoadFile("C:/Windows/test.txt", "test.txt");
           //
           LineList.Clear();
           ReadFile();
@@ -446,7 +481,7 @@ namespace Win7FTP
       // 上传test文件
       public void UpLoadFile(string localFile, string ftpPath)
       {
-          String FtpPath = "ftp://120.77.249.136/test.txt";
+          String FtpPath = "ftp://120.77.249.136/" + ftpPath;
           Uri uri = new Uri(FtpPath);
           if (!File.Exists(localFile))
           {
@@ -750,76 +785,129 @@ namespace Win7FTP
             lstRemoteSiteFiles.Items.Clear();
             if (!txtRemoteDirectory.Text.Equals("/")){
                 //不是在根目录
-                lstRemoteSiteFiles.BeginUpdate();
-               foreach (FTPfileInfo folder in FtpClient.ListDirectoryDetail(txtRemoteDirectory.Text))
-            {
-                ListViewItem item = new ListViewItem();
-                if (!folder.Filename.Equals("test.txt"))
-                {
-                    for (int i = 0; i < LineList.Count; i++)
-                    {
-                        if ((Separatenumber(LineList[i])).Equals(folder.Filename))
-                        {
-                            item.Text = Separatename(LineList[i]);
-                            i = LineList.Count;
-                        }
-                        else
-                        {
-                            item.Text = folder.Filename;
-                        }
-                    }
-
-                    //NameSeparatename(filename.Filename);
-                    if (folder.FileType == FTPfileInfo.DirectoryEntryTypes.Directory)
-                        item.SubItems.Add("文件夹");
-                    else
-                        item.SubItems.Add("文件");
+                        //for(int i=0;i<LineList.Count;i++){
+                        //    if ((Separatename(LineList[i])).Equals(lstRemoteSiteFiles.SelectedItems[0].Text))
+                        //    {
+                        //        lstRemoteSiteFiles.SelectedItems[0].Text = Separatenumber(LineList[i]);
+                        //    }    
+                        //}
 
 
-                    item.SubItems.Add(folder.Filename);
-                    //item.SubItems.Add(folder.Permission);
-                    item.SubItems.Add(folder.Filename);//
-                    item.SubItems.Add(folder.FileDateTime.ToShortDateString() + " " + folder.FileDateTime.ToShortTimeString());
-                    item.SubItems.Add(GetFileSize(folder.Size));
-                    for (int i = 0; i < LinesCounts.Count; i++)
-                    {
-                        //判断是否在线
-                        if (folder.Filename.Equals(LinesCounts[i]))
+                        //Console.WriteLine("lstRemoteSiteFiles.SelectedItems[0].Text " + lstRemoteSiteFiles.SelectedItems[0].Text);
+                //txtRemoteDirectory.Text = txtRemoteDirectory.Text + "/";
+                        lstRemoteSiteFiles.Items.Clear();
+                        FtpClient.CurrentDirectory = txtRemoteDirectory.Text;
+
+                        ////Set Current Dir
+                        //FtpClient.CurrentDirectory = txtRemoteDirectory.Text;
+
+                        lstRemoteSiteFiles.BeginUpdate();
+                        //Get Files and Folders from Selected Direcotry
+
+
+
+
+                        //复制集合
+                        List<FTPfileInfo> testlistfolders = new List<FTPfileInfo> { };
+                        List<FTPfileInfo> listfolder = new List<FTPfileInfo> { };
+                        //Open and Display Root Directory and Files/Folders in it
+                        foreach (FTPfileInfo folder in FtpClient.ListDirectoryDetail(txtRemoteDirectory.Text))
                         {
-                            item.SubItems.Add("在线");
-                            i = LinesCounts.Count;
+                            listfolder.Add(folder);
+                            testlistfolders.Add(folder);
                         }
-                        else
+
+                        //转换成int类型字符串
+                        List<Int32> intlist = new List<Int32> { };
+
+                        //对listfolder文件夹集合按照名称（数字大小）进行排序
+                        for (int i = 0; i < listfolder.Count; i++)
                         {
-                            if (i == LinesCounts.Count - 1)
+                                //intlist.Add(int.Parse(listfolders[i].Filename));
+                            intlist.Add(pictureport(listfolder[i].Filename));
+                        }
+                        //对int集合进行排序
+
+                        for (int a = 0; a < intlist.Count - 1; a++)
+                        {
+                            for (int b = 0; b < intlist.Count - 1; b++)
                             {
-                                item.SubItems.Add("不在线");
+                                if (intlist[b] > intlist[b + 1])
+                                {//交换
+                                    intlist[b] = intlist[b] + intlist[b + 1];
+                                    intlist[b + 1] = intlist[b] - intlist[b + 1];
+                                    intlist[b] = intlist[b] - intlist[b + 1];
+                                }
                             }
-                            //item.SubItems.Add("");
                         }
-                    }
+                        //输出int集合
+                        for (int i = 0; i < intlist.Count; i++)
+                        {
+                            Console.WriteLine("test:" + intlist[i]);
+                        }
 
-                    for (int i = 0; i < LineList.Count; i++)
-                    {
-                        //添加详细信息
-                        if (folder.Filename.Equals(Separatenumber(LineList[i])))
+                        //重排listfolders集合
+                        listfolder.Clear();
+                        for (int i = 0; i < testlistfolders.Count; i++)
                         {
-                            item.SubItems.Add(SeparateMessage(LineList[i]));
-                            i = LineList.Count;
+                                for (int a = 0; a < testlistfolders.Count; a++)
+                                {
+                                    if (i < intlist.Count)
+                                    {
+                                        if ((pictureport(testlistfolders[a].Filename)).Equals(intlist[i]))
+                                        {
+                                            listfolder.Add(testlistfolders[a]);
+                                            //a = testlistfolders.Count;
+                                        }
+                                    }
+
+                            }
                         }
-                        else
+
+                        //输出listfolders集合
+                        for (int i = 0; i < listfolder.Count; i++){
+                            Console.WriteLine("test:" + listfolder[i].Filename);
+                        }
+
+
+
+
+                          for (int i = 0; i < listfolder.Count; i++)
                         {
-                            if (i == LineList.Count - 1)
+                            ListViewItem item = new ListViewItem();
+                            if (!listfolder[i].Filename.Equals("test.txt"))
                             {
-                                item.SubItems.Add("");
-                            }
-                            //item.SubItems.Add("不在线");
+                                item.Text = listfolder[i].Filename;
+                                if (listfolder[i].FileType == FTPfileInfo.DirectoryEntryTypes.Directory)
+                                    item.SubItems.Add("文件夹");
+                                else
+                                    item.SubItems.Add("文件");
+                                item.SubItems.Add(listfolder[i].Filename);//
+                                item.SubItems.Add(listfolder[i].FileDateTime.ToShortDateString() + " " + listfolder[i].FileDateTime.ToShortTimeString());
+                                item.SubItems.Add(GetFileSize(listfolder[i].Size));
+                                        item.SubItems.Add(" ");
+
+                                for (int y = 0; y < LineList2.Count; y++)
+                                {
+                                    //添加详细信息
+                                    if (((txtRemoteDirectory.Text.ToString().Replace("/", "")).Equals(Separatenumber(LineList2[y]))) && 
+                                        listfolder[i].Filename.Equals(Separatefilename(LineList2[y])))
+                                    {
+                                        item.SubItems.Add(SeparateMessage(LineList2[y]));
+                                        y = LineList2.Count;
+                                    }
+                                    else
+                                    {
+                                        if (y == LineList2.Count - 1)
+                                        {
+                                            item.SubItems.Add("");
+                                        }
+                                    }
+                                }
+                                lstRemoteSiteFiles.Items.Add(item);
                             }
                         }
-                        lstRemoteSiteFiles.Items.Add(item);
-                    }
-                }
-               lstRemoteSiteFiles.EndUpdate();
+                        lstRemoteSiteFiles.EndUpdate();
             }else { 
                 //根目录
 
@@ -1750,6 +1838,15 @@ namespace Win7FTP
         }
         #endregion
 
+        //对图片文件列表进行按照名称排序 1.jpg
+        public int pictureport(string filename) {
+            int count = filename.IndexOf(".");
+            string name = filename.Substring(0, count);
+            return int.Parse(name);
+        }
+
+
+        //对listview列表进行双击
         private void lstRemoteSiteFiles_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (lstRemoteSiteFiles.Items.Count != 0)
@@ -1764,11 +1861,11 @@ namespace Win7FTP
                         //Set Current Directory for Download
                         FtpClient.CurrentDirectory = txtRemoteDirectory.Text;
                         //Its a File, so Ask them if they want to Save it...
-                        if (MessageBox.Show("你想保存这个文件: " + txtRemoteDirectory.Text + lstRemoteSiteFiles.SelectedItems[0].Text + "/" + "?", "下载文件?", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
-                        {
-                            //Save the File to location
-                            downloadToolStripMenuItem_Click(this, e);
-                        }
+                        //if (MessageBox.Show("你想保存这个文件: " + txtRemoteDirectory.Text + lstRemoteSiteFiles.SelectedItems[0].Text + "/" + "?", "下载文件?", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+                        //{
+                        //    //Save the File to location
+                        //    downloadToolStripMenuItem_Click(this, e);
+                        //}
                     }
                     else if (lstRemoteSiteFiles.SelectedItems[0].SubItems[1].Text == "文件夹") // Its a Directory
                     {
@@ -1802,67 +1899,141 @@ namespace Win7FTP
 
                         lstRemoteSiteFiles.BeginUpdate();
                         //Get Files and Folders from Selected Direcotry
+
+
+
+
+                        //复制集合
+                        List<FTPfileInfo> testlistfolders = new List<FTPfileInfo> { };
+                        List<FTPfileInfo> listfolder = new List<FTPfileInfo> { };
+                        //Open and Display Root Directory and Files/Folders in it
                         foreach (FTPfileInfo folder in FtpClient.ListDirectoryDetail(txtRemoteDirectory.Text))
                         {
+                            listfolder.Add(folder);
+                            testlistfolders.Add(folder);
+                        }
+
+                        //转换成int类型字符串
+                        List<Int32> intlist = new List<Int32> { };
+
+                        //对listfolder文件夹集合按照名称（数字大小）进行排序
+                        for (int i = 0; i < listfolder.Count; i++)
+                        {
+                                //intlist.Add(int.Parse(listfolders[i].Filename));
+                            intlist.Add(pictureport(listfolder[i].Filename));
+                        }
+                        //对int集合进行排序
+
+                        for (int a = 0; a < intlist.Count - 1; a++)
+                        {
+                            for (int b = 0; b < intlist.Count - 1; b++)
+                            {
+                                if (intlist[b] > intlist[b + 1])
+                                {//交换
+                                    intlist[b] = intlist[b] + intlist[b + 1];
+                                    intlist[b + 1] = intlist[b] - intlist[b + 1];
+                                    intlist[b] = intlist[b] - intlist[b + 1];
+                                }
+                            }
+                        }
+                        //输出int集合
+                        for (int i = 0; i < intlist.Count; i++)
+                        {
+                            Console.WriteLine("test:" + intlist[i]);
+                        }
+
+                        //重排listfolders集合
+                        listfolder.Clear();
+                        for (int i = 0; i < testlistfolders.Count; i++)
+                        {
+                            //判断文件名是否包含字母
+                            //if (SeparateAAame(testlistfolders[i].Filename))
+                            //{
+                                //intlist.Add(int.Parse(listfolders[i].Filename));//只有一个1
+                                for (int a = 0; a < testlistfolders.Count; a++)
+                                {
+                                    if (i < intlist.Count)
+                                    {
+                                        if ((pictureport(testlistfolders[a].Filename)).Equals(intlist[i]))
+                                        {
+                                            listfolder.Add(testlistfolders[a]);
+                                            //a = testlistfolders.Count;
+                                        }
+                                    }
+
+                                //}
+
+                            }
+                        }
+
+                        //输出listfolders集合
+                        for (int i = 0; i < listfolder.Count; i++){
+                            Console.WriteLine("test:" + listfolder[i].Filename);
+                        }
+
+
+
+
+                          for (int i = 0; i < listfolder.Count; i++)
+                        {
                             ListViewItem item = new ListViewItem();
-                            if (!folder.Filename.Equals("test.txt"))
+                            if (!listfolder[i].Filename.Equals("test.txt"))
                             {
                                 //进入文件夹之后的操作
-                                for (int i = 0; i < LineList.Count; i++)
-                                {
-                                    if ((Separatenumber(LineList[i])).Equals(folder.Filename))
-                                    {
-                                        item.Text = Separatename(LineList[i]);
-                                        i = LineList.Count;
-                                    }
-                                    else
-                                    {
-                                        item.Text = folder.Filename;
-                                    }
-                                }
+                                //for (int i = 0; i < LineList.Count; i++)
+                                //{
+                                //    if ((Separatenumber(LineList[i])).Equals(folder.Filename))
+                                //    {
+                                //        item.Text = Separatename(LineList[i]);
+                                //        i = LineList.Count;
+                                //    }
+                                //    else
+                                //    {
+                                item.Text = listfolder[i].Filename;
+                                //    }
+                                //}
                                 //NameSeparatename(filename.Filename);
-                                if (folder.FileType == FTPfileInfo.DirectoryEntryTypes.Directory)
+                                if (listfolder[i].FileType == FTPfileInfo.DirectoryEntryTypes.Directory)
                                     item.SubItems.Add("文件夹");
                                 else
                                     item.SubItems.Add("文件");
                                 //item.SubItems.Add(folder.Filename);
                                 //item.SubItems.Add(folder.Permission);
-                                item.SubItems.Add(folder.Filename);//
-                                item.SubItems.Add(folder.FileDateTime.ToShortDateString() + " " + folder.FileDateTime.ToShortTimeString());
-                                item.SubItems.Add(GetFileSize(folder.Size));
-                                for (int i = 0; i < LinesCounts.Count; i++)
-                                {
-                                    //判断是否在线
-                                    if (folder.Filename.Equals(LinesCounts[i]))
-                                    {
-                                        item.SubItems.Add("在线");
-                                        i = LinesCounts.Count;
-                                    }
-                                    else
-                                    {
-                                        if (i == LinesCounts.Count - 1)
-                                        {
-                                            item.SubItems.Add("不在线");
-                                        }
-                                        //item.SubItems.Add("");
-                                    }
-                                }
-
-                                for (int i = 0; i < LineList.Count; i++)
+                                item.SubItems.Add(listfolder[i].Filename);//
+                                item.SubItems.Add(listfolder[i].FileDateTime.ToShortDateString() + " " + listfolder[i].FileDateTime.ToShortTimeString());
+                                item.SubItems.Add(GetFileSize(listfolder[i].Size));
+                                //for (int i = 0; i < LinesCounts.Count; i++)
+                                //{
+                                //    //判断是否在线
+                                //    if (listfolder[i].Filename.Equals(LinesCounts[i]))
+                                //    {
+                                        item.SubItems.Add(" ");
+                                    //    i = LinesCounts.Count;
+                                    //}
+                                    //else
+                                    //{
+                                    //    if (i == LinesCounts.Count - 1)
+                                    //    {
+                                    //        item.SubItems.Add(" ");
+                                    //    }
+                                    //    //item.SubItems.Add("");
+                                    //}
+                                //}
+                                for (int y = 0; y < LineList2.Count; y++)
                                 {
                                     //添加详细信息
-                                    if (folder.Filename.Equals(Separatenumber(LineList[i])))
+                                    if (((txtRemoteDirectory.Text.ToString().Replace("/", "")).Equals(Separatenumber(LineList2[y]))) &&
+                                        listfolder[i].Filename.Equals(Separatefilename(LineList2[y])))
                                     {
-                                        item.SubItems.Add(SeparateMessage(LineList[i]));
-                                        i = LineList.Count;
+                                        item.SubItems.Add(SeparateMessage(LineList2[y]));
+                                        y = LineList2.Count;
                                     }
                                     else
                                     {
-                                        if (i == LineList.Count - 1)
+                                        if (y == LineList2.Count - 1)
                                         {
                                             item.SubItems.Add("");
                                         }
-                                        //item.SubItems.Add("不在线");
                                     }
                                 }
                                 lstRemoteSiteFiles.Items.Add(item);
@@ -1970,6 +2141,7 @@ namespace Win7FTP
             {
                 //Declare and Setup out UploadForm Variable.  The frmUpload Constructor will do everything else, including showing the form.
                 frmUpload UploadForm = new frmUpload(objOpenDialog.FileName, FtpClient.CurrentDirectory, FtpClient);
+                RefreshDirectory();
             }
             //Call RefreshDirectory; Refresh the Files and Folders for Current Directory.
             RefreshDirectory();
@@ -2495,6 +2667,31 @@ namespace Win7FTP
                 //Check if File or Folder
                 if (lstRemoteSiteFiles.SelectedItems[0].SubItems[1].Text == "文件")
                 {
+                    try
+                    {
+                        //FtpClient.FtpDeleteDirectory(txtRemoteDirectory.Text+lstRemoteSiteFiles.SelectedItems[0].SubItems[2].Text);
+                        //lstRemoteSiteFiles.SelectedItems[0].SubItems[4].Text = "3500";
+                        //弹出对话框 获取到值 并且保存
+                        FrmChild frmChild = new FrmChild();
+                        frmChild.ShowDialog();
+                        if (frmChild.DialogResult == System.Windows.Forms.DialogResult.OK)
+                        {
+                            //lstRemoteSiteFiles.SelectedItems[0].SubItems[6].Text = frmChild.StrValue;//获取弹出窗体的属性值
+                            //将获取到的值输入文件，并上传
+                            string filename = txtRemoteDirectory.Text.ToString().Replace("/", "");
+                            writefiletest1(filename + "," + lstRemoteSiteFiles.SelectedItems[0].SubItems[2].Text+":" + frmChild.StrValue);
+
+
+                        }
+                        //编号,名称
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        TaskDialog.Show("删除文件出错.  错误信息: " + ex.Message);
+                    }
+                    //RefreshDirectory();
                 }
                 else
                 //文件夹
@@ -2510,10 +2707,8 @@ namespace Win7FTP
                         {
                             lstRemoteSiteFiles.SelectedItems[0].SubItems[4].Text  = frmChild.StrValue;//获取弹出窗体的属性值
                             //将获取到的值输入文件，并上传
-                            writefile(lstRemoteSiteFiles.SelectedItems[0].SubItems[2].Text + ","
+                            writefile(lstRemoteSiteFiles.SelectedItems[0].SubItems[2].Text + "," 
                                 + lstRemoteSiteFiles.SelectedItems[0].Text + ":" + frmChild.StrValue);  
-
-
                         }
                         //编号,名称
                        
@@ -2528,7 +2723,74 @@ namespace Win7FTP
                 RefreshDirectory();
             }
         }
+        public void writefiletest1(String name)
+        {
+            //String name = "1,1.jpg:水电费水电费多少";
+            String tempname = name;
+            if (LineList2.Count == 0)
+            {
+                LineList2.Add(name);
+            }
+            else {
+                for (int i = 0; i < LineList2.Count; i++)
+                {
+                    //判断当前文件里面是否含有相同编号的信息，如果有，删除，并且重新添加新的信息
+                    if ((Separatenumber(name).Equals(Separatenumber(LineList2[i]))) &&
+                        (Separatefilename(name).Equals(Separatefilename(LineList2[i]))))
+                    {
+                        //name = name +":"+ SeparateMessage(LineList[i]);
+                        LineList2.Remove(LineList2[i]);
+                        //name = name + "\r\n" + LineList[i];
+                        //i = LineList.Count;
+                    }
+                    else
+                    {
+                        if (i == LineList2.Count - 1)
+                        {
+                            //name = name + "\r\n" + LineList[i];
+                        }
+                    }
+                    if (LineList2.Count != i)
+                    {
+                        name = name + "\r\n" + LineList2[i];
+                    }
+                }
+            }
+            //System.Diagnostics.Debug.WriteLine("" + name);
+            FileStream fs = new FileStream("C:/Windows/test1.txt", FileMode.Create);
+            //获得字节数组
+            byte[] data = new UTF8Encoding().GetBytes(name);
+            //开始写入
+            fs.Write(data, 0, data.Length);
+            //清空缓冲区、关闭流
+            fs.Flush();
+            fs.Close();
+            //frmLogin fl = new frmLogin();
+            //更新test.txt文件
+            UpLoadFile("C:/Windows/test1.txt", "test1.txt");
+            //
+            LineList2.Clear();
+            ReadFile();
 
+        }
+        //名字
+        public String Separatefilename(string name)
+        {
+            int index = name.IndexOf(",");
+            int counts;
+            string cc;
+            if (name.Contains(":"))
+            {
+                counts = name.IndexOf(":");
+                cc = name.Substring(index + 1, counts - index - 1);
+            }
+            else
+            {
+                cc = name.Substring(index + 1);
+            }
+            return cc;
+
+        }
         private void button1_Click(object sender, EventArgs e)
         {
             textBox1.Text = "";

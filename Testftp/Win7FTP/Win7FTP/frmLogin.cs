@@ -80,13 +80,11 @@ namespace Win7FTP
                     && !txtHostName.Text.ToString().Trim().Equals(""))
                 {
                     Main = new frmMain();
-
                     //Set FTP Client in MAIN form
                     Main.SetFtpClient(objFtp);
                     System.Threading.Thread.Sleep(10);
                     //Show MAIN form and HIDE this one
                     Main.Show();
-
                     this.Hide();
                 }
                 else
@@ -105,9 +103,10 @@ namespace Win7FTP
         private void frmLogin_Load(object sender, EventArgs e)
         {
             downloadtest("test.txt");
+            downloadtest("test1.txt");
             //downloadtest("rsyncd");
 
-            //UpLoadFile("C:/Windows/test.txt", "test.txt");
+            //UpLoadFile("C:/Windows/test1.txt", "test1.txt");
             //UpLoadFiletest("C:/1/0.jpg", "11");
             //for (int i = 17; i < 151;i++ )
             //{
@@ -574,7 +573,7 @@ namespace Win7FTP
         // 上传test文件
         public void UpLoadFile(string localFile, string ftpPath)
         {
-            String FtpPath = "ftp://120.77.249.136/test.txt";
+            String FtpPath = "ftp://120.77.249.136/" + ftpPath;
             Uri uri = new Uri(FtpPath);
             if (!File.Exists(localFile))
             {

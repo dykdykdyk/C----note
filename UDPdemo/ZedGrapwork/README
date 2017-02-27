@@ -3,5 +3,3 @@ Author: Felipe Pelizaro Gentil
 - Plotting graphs in C# with ZedGraph
 
 For more information please visit: http://codeabout.wordpress.com
-关于打包成一个exe文件的问题：参考网址http://www.jb51.net/article/99248.htm，
-具体命令：Install-Package Costura.Fody -Version 1.3.3
