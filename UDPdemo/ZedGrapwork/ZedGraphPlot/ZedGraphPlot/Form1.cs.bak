@@ -5,13 +5,11 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using ZedGraph;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ZedGraphPlot
 {
@@ -22,61 +20,32 @@ namespace ZedGraphPlot
         GraphPane myPane1 = new GraphPane();
         GraphPane myPane2 = new GraphPane();
         GraphPane myPane3 = new GraphPane();
-        GraphPane myPane4 = new GraphPane();
         Thread workThread, workThreadtwo;
         // poing pair lists
         PointPairList listPoints11 = new PointPairList();
         PointPairList listPoints31 = new PointPairList();
         PointPairList listPoints51 = new PointPairList();
-        PointPairList listPoints71 = new PointPairList();
         List<String> devicenamelist = new List<String> { };
 
         List<String> heartdatalist = new List<String> { };
         List<String> stepdatalist = new List<String> { };
         List<String> temperaturedatalist = new List<String> { };
-        List<String> rssidatalist = new List<String> { };
-
-        List<String> Arraycache=new List<String> {};
-        List<String> ArraycacheTemp = new List<String> { };
         // line item
         LineItem myCurve1;
         LineItem myCurve3;
         LineItem myCurve5;
-        LineItem myCurve7;
         Socket server, client;
         public Form1()
         {
             InitializeComponent();
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(Form_Closing);
-
-            intiipaddress();
+            System.Diagnostics.Debug.WriteLine("收到： " + devicenamelist.Count);
         }
-
-        private void intiipaddress() {
-            string hostName = Dns.GetHostName();//本机名                                      
-            ///获取本地的IP地址
-            string AddressIP = string.Empty;
-            foreach (IPAddress _IPAddress in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
-            {
-                if (_IPAddress.AddressFamily.ToString() == "InterNetwork")
-                {
-                    AddressIP = _IPAddress.ToString();
-                    ListViewItem lv = new ListViewItem();
-                    lv.SubItems[0].Text = AddressIP;
-                    listView2.Items.Add(lv);
-                    System.Diagnostics.Debug.WriteLine("收 " + AddressIP);
-                }
-            }
-        }
-       
 
         private void Form_Closing(object sender, FormClosingEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("收到： Form_Closing");
             m_is_running = false;
-            if (server != null) {
-                server.Close();
-            }
             System.Environment.Exit(0);
         }
         string aa = "";
@@ -106,27 +75,20 @@ namespace ZedGraphPlot
             myPane3.Title.Text = "实时步数折线图";
             myPane3.XAxis.Title.Text = "时间";
             myPane3.YAxis.Title.Text = "步数";
+
+
             myCurve5 = myPane3.AddCurve(null, listPoints51, Color.Blue, SymbolType.None);
             myCurve5.Line.Width = 2;
             zedGraphControl3.AxisChange();
-
-
-            myPane4 = zedGraphControl4.GraphPane;
-            myPane4.Title.Text = "实时信号折线图";
-            myPane4.XAxis.Title.Text = "时间";
-            myPane4.YAxis.Title.Text = "信号";
-            myCurve7 = myPane4.AddCurve(null, listPoints71, Color.Blue, SymbolType.None);
-            myCurve7.Line.Width = 2;
-            zedGraphControl4.AxisChange();
         }
-        int counts = -1;
+        int i = 0;
         private int length2;
 
         public void ServiceReciveMsg()
         {
             while (m_is_running)
             {
-                
+                //System.Threading.Thread.Sleep(20);
                 //获取发送方的ip
                 EndPoint point = new IPEndPoint(IPAddress.Any, 0);//用来保存发送方的ip和端口号
                 //aa = "南音";
@@ -134,40 +96,18 @@ namespace ZedGraphPlot
                 byte[] buffer2 = new byte[1024];
                 try
                 {
-                   
                     length2 = server.ReceiveFrom(buffer2, ref point);
                 }
                 catch (SocketException e)
                 {
                     continue;
                 }
-                counts++;
-                byte[] data2 = new byte[31];
-                // 3,1, 32, 2, 26, 255, 66, 50, 26, 255, 255, 255, 255, 19, 19, 19, 19, 80, 1, 52, 10, 0, 1, 1, 1, 0, 0, 1, 1, 0, 2
-                Array.Copy(buffer2, 0, data2, 0, 31);
-                System.Diagnostics.Debug.WriteLine("");
                 //打印信息
-                Cache(data2);
+                System.Diagnostics.Debug.WriteLine("port： "+ point);
+                System.Diagnostics.Debug.WriteLine(" ");
                 for (int i = 0; i < 31; i++)
                 {
-                   
-                    System.Diagnostics.Debug.Write(data2[i]+",");
-                   
-                    // if (i == 0)
-                    //{
-                    //    displayLog(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss   ") + ":" + Convert.ToString(data2[i], 10) + ",", 0);
-                    //}
-                    //else if (i == 30)
-                    //{
-                    //    displayLog(Convert.ToString(data2[i], 10), 1);
-                    //    Array.Clear(data2, 0, data2.Length);
-                    //}
-                    //else
-                    //{
-                    //    displayLog(Convert.ToString(data2[i], 10) + ",", 0);
-                    //}
-
-
+                    System.Diagnostics.Debug.Write( buffer2[i]+", ");
                 }
                 System.Diagnostics.Debug.WriteLine("");
                 byte[] buf = new byte[31];
@@ -190,7 +130,6 @@ namespace ZedGraphPlot
                     && data[4] == 0x1A && data[5] == 0xFF)
                 {
                     //设置固定UUID后的处理办法
-                    //datareslut(data);
                     byte[] devicedata = new byte[8];
                     Array.Copy(data, 6, devicedata, 0, 8);
                     //处理发送方ip地址
@@ -203,11 +142,7 @@ namespace ZedGraphPlot
                     devicenameadd(devicename);//加入集合
                     int heart = (data[16] & 0xff); //心率数据
                     System.Diagnostics.Debug.WriteLine("心率数据 : " + heart);
-                        deivceTest(devicename, heart);
-                    int rssi = (data[17] & 0xff); //信号强度
-                    sbyte i = (sbyte)rssi;
-                    System.Diagnostics.Debug.WriteLine("信号强度 : " + i);
-                    deivceTest2(devicename, i);
+                    deivceTest(devicename, heart);
                     //zedGraphControl1.IsEnableHZoom = true; //允许水平缩放
                     //zedGraphControl1.IsEnableVZoom = true; //允许垂直缩放
                     int step = (((int)(data[18] & 0xff) & 0x7f) << 10)
@@ -225,53 +160,6 @@ namespace ZedGraphPlot
             }
             server.Close();
         }
-        private void timer2_Tick(object sender, EventArgs e)
-        {
-            if (Arraycache.Count == 0) {
-                return;
-            }
-            if (testfinish)
-            {
-                testfinish = false;
-                for (int j = 0; j < 31; j++)
-                {
-                    ArraycacheTemp.Add(Arraycache[j]);
-                }
-                //显示数据
-                for (int j = 0; j < 31; j++)
-                {
-                    if (j == 0)
-                    {
-                        displayLog(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss   ") + "服务端接受到数据:" + ArraycacheTemp[j] + ",", 0);
-                    }
-                    else if (j == 30)
-                    {
-                        displayLog(ArraycacheTemp[j], 1);
-                        ArraycacheTemp.RemoveRange(0, 31);
-                        Arraycache.RemoveRange(0, 31);
-                        testfinish = true;
-                    }
-                    else
-                    {
-                        displayLog(ArraycacheTemp[j] + ",", 0);
-                    }
-                }
-            }
-           
-        }
-        //缓存数据的方法
-        bool testfinish =true,threadstart=true;
-        private void Cache(byte[] arr)
-        {
-           
-            for (int j = 0; j < 31; j++)
-            {
-                Arraycache.Add(Convert.ToString(arr[j], 10));
-            }
-              
-           
-            //}
-        }
         //添加对listview的双击事件
         //添加数据步骤：在list集合去寻找数据 
         bool test = true;
@@ -281,6 +169,7 @@ namespace ZedGraphPlot
             //查找出uuid
             j = 0;
             timer1.Start();
+            System.Diagnostics.Debug.WriteLine(listView1.SelectedItems[0].Text);
         }
         private void timer1_Tick(object sender, EventArgs e)
         {
@@ -310,15 +199,11 @@ namespace ZedGraphPlot
                 listPoints31.Clear();
                 zedGraphControl2.AxisChange();
                 zedGraphControl2.Refresh();
-                listPoints71.Clear();
-                zedGraphControl4.AxisChange();
-                zedGraphControl4.Refresh();
-
+           
         }
          int se1 = 1;
          int se2 = 1;
          int se3 = 1;
-         int se4 = 1;
         //显示数据在图标控件
         public void getdatashow(string  name,int data) {
             //show
@@ -329,7 +214,7 @@ namespace ZedGraphPlot
                 {
                    
                     //listPoints11.Add(se1, getdata(heartdatalist[data]));
-                    listPoints11.Add(se1, getdata(heartdatalist[data]));
+                    listPoints11.Add(data, getdata(heartdatalist[data]));
                     zedGraphControl1.AxisChange();
                     zedGraphControl1.Refresh();
                     se1++;
@@ -339,32 +224,20 @@ namespace ZedGraphPlot
             {
                 if (name.Equals(getname(temperaturedatalist[data])))
                 {
-                    listPoints31.Add(se2, getdata(temperaturedatalist[data]));
+                    listPoints31.Add(data, getdata(temperaturedatalist[data]));
                     zedGraphControl2.AxisChange();
                     zedGraphControl2.Refresh();
                     se2++;
                 }
             }
-       
             if (data < stepdatalist.Count)
             {
                 if (name.Equals(getname(stepdatalist[data])))
                 {
-                    listPoints51.Add(se3, getdata(stepdatalist[data]));
+                    listPoints51.Add(data, getdata(stepdatalist[data]));
                     zedGraphControl3.AxisChange();
                     zedGraphControl3.Refresh();
                     se3++;
-                }
-            }
-            //信号
-            if (data < rssidatalist.Count)
-            {
-                if (name.Equals(getname(rssidatalist[data])))
-                {
-                    listPoints71.Add(se4, getdata(rssidatalist[data]));
-                    zedGraphControl4.AxisChange();
-                    zedGraphControl4.Refresh();
-                    se4++;
                 }
             }
         }
@@ -399,12 +272,6 @@ namespace ZedGraphPlot
                 zedGraphControl3.AxisChange();
                 zedGraphControl3.Refresh();
             }
-            if (listPoints71.Count > 60)
-            {
-                listPoints71.RemoveAt(0);
-                zedGraphControl4.AxisChange();
-                zedGraphControl4.Refresh();
-            }
         }
         //处理设备的名字
         public void devicenameadd(String name)
@@ -438,13 +305,6 @@ namespace ZedGraphPlot
             heartdatalist.Add(name+":"+ hear);
                 //listPoints11.Add(i1, heart);
                 //i1++;
-        }
-        //信号数据处理
-        public void deivceTest2(String name, int hear)
-        {
-            rssidatalist.Add(name + ":" + hear);
-            //listPoints11.Add(i1, heart);
-            //i1++;
         }
         int x1 = 0;
         //运动步数
@@ -501,13 +361,6 @@ namespace ZedGraphPlot
             int heart = (data[16] & 0xff); //心率数据
             System.Diagnostics.Debug.WriteLine("心率数据 : " + heart);
 
-            int rssi = (data[17] & 0xff); //心率数据
-            sbyte i = (sbyte)rssi;
-            BitConverter.GetBytes(rssi);
-            //BitConverter.ToInt32(data[17], rssi);
-            System.Diagnostics.Debug.WriteLine("信号 : " + rssi);
-            System.Diagnostics.Debug.WriteLine("信号2 : " + i);
-
             int heart_update = (data[18] & 0xff) >> 7;  //心率更新
             System.Diagnostics.Debug.WriteLine("心率更新 : " + heart_update);
 
@@ -562,35 +415,29 @@ namespace ZedGraphPlot
         int port;
         private void button1_Click(object sender, EventArgs e)
         {
-            if (threadstart)
-            {
-                timer2.Interval = 1000;
-                timer2.Start();
-                threadstart = false;
-            }
-
             //6001 
             server = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            if (!listView2.SelectedItems[0].Text.ToString().Equals("") && !textBox2.Text.ToString().Equals(""))
+            if (!textBox1.Text.ToString().Equals("") && !textBox2.Text.ToString().Equals(""))
             {
                 //server.Bind(new IPEndPoint(IPAddress.Parse("192.168.1.75"), 6001));//绑定端口号和IP
                 string str = string.Empty;
                 str = textBox2.Text.ToString();
                 port = int.Parse(str);
                 //这个ip地址 必须是你本机的ip地址
-                server.Bind(new IPEndPoint(IPAddress.Parse(listView2.SelectedItems[0].Text.ToString()), port));//绑定端口号和IP
-                Console.WriteLine("服务端已经开启：" + listView2.SelectedItems[0].Text.ToString() + "  port: " + port);
+                server.Bind(new IPEndPoint(IPAddress.Parse(textBox1.Text.ToString()), port));//绑定端口号和IP
+                Console.WriteLine("服务端已经开启：" + textBox1.Text.ToString() + "  port: " + port);
                 Thread t = new Thread(ServiceReciveMsg);//开启接收消息线程
                 t.Start();
                 server.ReceiveTimeout = 60000;
-                button1.Enabled = false;
-
             }
             else
             {
                 MessageBox.Show("请输入您本机的ip地址和端口号后重试！");
                 return;
             }
+           
+
+
 
             Control.CheckForIllegalCrossThreadCalls = false;
             Thread thread = new Thread(ServiceReciveMsg);
@@ -598,56 +445,22 @@ namespace ZedGraphPlot
             thread.Start();
 
         }
-
-        public void displayLog(string log,int number)
-        {
-            //textBox3.AppendText(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss   ") + log + "\r\n");
-            if (number == 0)
-            {
-                textBox3.AppendText(log);
-            }
-            else if (number == 1)
-            {
-                textBox3.AppendText(log +"\n");
-            }
-           
-
-        }
-
         //向listview中添加数据
         public void adddatatolistview(string  name) {
             ListViewItem lv = new ListViewItem();
             lv.SubItems[0].Text = name;
             listView1.Items.Add(lv);
         }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void listView2_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            Console.WriteLine(listView2.SelectedItems[0].Text);
-            displayLog("您选择的IP地址为：" + listView2.SelectedItems[0].Text.ToString(), 1);
-            listView2.Enabled = false;
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-
-
         //启动客户端 //测试假数据
         private void button2_Click(object sender, EventArgs e)
         {
             client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            client.Bind(new IPEndPoint(IPAddress.Parse(listView2.SelectedItems[0].Text.ToString()), 6002));
+            client.Bind(new IPEndPoint(IPAddress.Parse(textBox1.Text.ToString()), 6002));
             Thread t = new Thread(sendMsg);
             t.Start();
+            Console.WriteLine("客户端已经开启");
         }
+     
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -657,11 +470,11 @@ namespace ZedGraphPlot
 
         public void sendMsg()
         {
-            EndPoint point = new IPEndPoint(IPAddress.Parse(listView2.SelectedItems[0].Text.ToString()), port);
+            EndPoint point = new IPEndPoint(IPAddress.Parse(textBox1.Text.ToString()), port);
             //while (true)
             //{
                 //System.Threading.Thread.Sleep(2000);
-                byte[] array1 = new byte[] { 3,1, 32, 2, 26, 255, 66, 50, 26, 255, 255, 255, 255, 19, 19, 19, 19, 80, 1, 52, 10, 0, 1, 1, 1, 0, 0, 1, 1, 0, 2 };
+                byte[] array1 = new byte[] { 5, 1, 255, 255, 255, 255, 32, 2, 3, 8, 66, 50, 26, 255, 19, 19, 19, 19, 19, 19, 19, 19, 1, 52, 10, 0, 1, 1, 1, 0, 0, 1, 1, 0, 2, 33, 51, 114, 63 };
                 byte[] array2 = new byte[] { 5, 1, 255, 255, 255, 255, 32, 2, 3, 8, 66, 50, 26, 255, 25, 25, 25, 25, 25, 25, 25, 25, 1, 52, 20, 0, 2, 2, 2, 0, 0, 2, 2, 0, 2, 33, 51, 114, 63 };
                 byte[] array3 = new byte[] { 5, 1, 255, 255, 255, 255, 32, 2, 3, 8, 66, 50, 26, 255, 3, 255, 255, 255, 255, 255, 255, 255, 1, 52, 30, 0, 3, 3, 3, 0, 0, 3, 3, 0, 2, 33, 51, 114, 63 };
                 byte[] array4 = new byte[] { 5, 1, 255, 255, 255, 255, 32, 2, 3, 8, 66, 50, 26, 255, 4, 255, 255, 255, 255, 255, 255, 255, 1, 52, 40, 0, 4, 4, 4, 0, 0, 4, 4, 0, 2, 33, 51, 114, 63 };
@@ -670,10 +483,28 @@ namespace ZedGraphPlot
                 byte[] array7 = new byte[] { 5, 1, 255, 255, 255, 255, 32, 2, 3, 8, 66, 50, 26, 255, 7, 255, 255, 255, 255, 255, 255, 255, 1, 52, 70, 0, 7, 7, 7, 0, 0, 7, 7, 0, 2, 33, 51, 114, 63 };
                 byte[] array8 = new byte[] { 5, 1, 255, 255, 255, 255, 32, 2, 3, 8, 66, 50, 26, 255, 8, 255, 255, 255, 255, 255, 255, 255, 1, 52, 80, 0, 8, 8, 8, 0, 0, 8, 8, 0, 2, 33, 51, 114, 63 };
             //string msg ="赖以~~";
-            for(int i = 0; i < 3; i++) { 
+            while (true) {
+                //for (int i = 0; i < 1; i++)
+                //{
                     client.SendTo(array1, point);
+                //}
+                //System.Threading.Thread.Sleep(500);
             }
+               
 
+            //for (int i = 0; i <170; i++)
+            //{
+            //    client.SendTo(array1, point);
+            //}
+            //client.SendTo(array2, point);
+            //client.SendTo(array3, point);
+            //client.SendTo(array4, point);
+            //client.SendTo(array5, point);
+            //client.SendTo(array6, point);
+            //client.SendTo(array7, point);
+            //client.SendTo(array8, point);
+            //Console.WriteLine("客户端发送的数据：" + Encoding.UTF8.GetBytes(msg));
+            //}
         }
     }
 }
