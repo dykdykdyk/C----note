@@ -48,7 +48,6 @@ namespace ZedGraphPlot
         {
             InitializeComponent();
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(Form_Closing);
-
             intiipaddress();
         }
 
@@ -119,9 +118,11 @@ namespace ZedGraphPlot
             myCurve7.Line.Width = 2;
             zedGraphControl4.AxisChange();
         }
+
+
+
         int counts = -1;
         private int length2;
-
         public void ServiceReciveMsg()
         {
             while (m_is_running)
@@ -562,6 +563,7 @@ namespace ZedGraphPlot
         int port;
         private void button1_Click(object sender, EventArgs e)
         {
+
             if (threadstart)
             {
                 timer2.Interval = 1000;
@@ -579,7 +581,7 @@ namespace ZedGraphPlot
                 port = int.Parse(str);
                 //这个ip地址 必须是你本机的ip地址
                 server.Bind(new IPEndPoint(IPAddress.Parse(listView2.SelectedItems[0].Text.ToString()), port));//绑定端口号和IP
-                Console.WriteLine("服务端已经开启：" + listView2.SelectedItems[0].Text.ToString() + "  port: " + port);
+                displayLog("服务已经开启： ip:" + listView2.SelectedItems[0].Text.ToString()+ "  端口号: " + port, 1);
                 Thread t = new Thread(ServiceReciveMsg);//开启接收消息线程
                 t.Start();
                 server.ReceiveTimeout = 60000;
@@ -638,6 +640,30 @@ namespace ZedGraphPlot
 
         }
 
+        private void timer3_Tick(object sender, EventArgs e)
+        {
+
+        }
+        /// <summary>
+        /// 向特定ip的主机的端口发送数据报
+        /// </summary>
+        public void ServicesendMsg(string  request)
+        {
+            EndPoint point = new IPEndPoint(IPAddress.Parse(listView2.SelectedItems[0].Text.ToString()), port);
+            //while (true)
+            //{
+           
+            Console.Write("发送数据:"+ request);
+            server.SendTo(Encoding.UTF8.GetBytes(request), point);
+            //}
+        }
+        //电脑端发送数据给基站 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            ServicesendMsg(textBox1.Text.ToString());
+
+        }
+     
 
 
         //启动客户端 //测试假数据
